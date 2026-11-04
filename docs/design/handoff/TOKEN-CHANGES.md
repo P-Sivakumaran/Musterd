@@ -2,6 +2,19 @@
 
 Only **Midnight** and **Daylight** change. The other nine skins keep today's values. No new component library and no new `--color-*` names. One new length token, `--radius-composer`, replaces a radius that is hardcoded in `Composer.tsx` today.
 
+Direction: **Basel Ledger Desk** (Swiss grid and typography), constrained by **Ulm / Rams** (as little design as possible). See `UX-EVAL-EUROPEAN.md`.
+
+## Signal-only accent rule
+
+`--color-accent` (mustard) is the desk's **one signal colour**. It appears only on:
+
+1. the keyboard focus ring (`--color-focus`);
+2. "needs you": the bot row's dot and label, the chat header status, and the inbox count;
+3. the approval border in the transcript;
+4. "Allow once", the only accent-filled control.
+
+It never appears on working or streaming status, the streaming caret, selection, switches, the current row, hover, washes, backgrounds or the brand mark. Those use ink. Every skin follows the same rule with its own accent.
+
 ## `--color-*` changes
 
 Contrast is measured on the surface each token sits on. Re-run `pnpm check:contrast` once these values land in `styles.css`.
@@ -15,7 +28,7 @@ Contrast is measured on the surface each token sits on. Re-run `pnpm check:contr
 | `--color-accent-text` | `#7fc0ff` | `#f0c867` | 11.74:1 on `app` |
 | `--color-accent-ink` | `#ffffff` | `#1a1405` | Dark ink on the mustard fill: 9.34:1 (white on today's blue was 3.65:1) |
 | `--color-focus` | `#459ffe` | `#f0c867` | The focus ring follows the accent |
-| `--color-warning` | `#ff9800` | `#ff7a50` | Moved toward red so "needs you" never reads as accent. 7.49:1 on `panel` |
+| `--color-warning` | `#ff9800` | `#ff7a50` | Moved toward red so a warning never reads as the mustard signal. 7.49:1 on `panel` |
 | `--color-bubble-user` | `#5a5a5a` | `#2b2b2b` | A quieter user turn. Ink is 12.99:1 on it |
 | `--color-composer` | `#1f1f1f` | `#1a1a1a` | Separates the composer from `card` and `raised` |
 
@@ -40,8 +53,8 @@ Unchanged in both skins: every surface (`app`, `panel`, `raised`, `raised-hover`
 
 | Token | Today | Proposed |
 | --- | --- | --- |
-| `--chat-column-max` (default width) | `60rem` | `46rem`. Wide (`80rem`) and Full stay as they are |
-| `--radius-composer` *(new)* | 22px hardcoded in `Composer.tsx` (18px once wrapped) | `16px` in Midnight and Daylight. Other skins can keep 22px by setting it |
+| `--chat-column-max` (default width) | `60rem` | `60rem` (unchanged). A new `[data-chat-width="comfortable"]` sets `46rem`. Wide (`80rem`) and Full stay as they are |
+| `--radius-composer` *(new)* | 22px hardcoded in `Composer.tsx` (18px once wrapped) | `8px` in Midnight and Daylight, whether or not the field wraps. Other skins can keep 22px by setting it |
 
 ## Shared classes
 
@@ -59,14 +72,15 @@ Unchanged in both skins: every surface (`app`, `panel`, `raised`, `raised-hover`
 - **Bot turns are not boxed.** In Midnight and Daylight a bot reply sits on the page with a 28px avatar and a name/time line. `--color-card` is no longer the bot bubble there. User turns keep `--color-bubble-user`.
 - **Tool steps as a mono ledger.** Steps render as a `--font-mono` list with a hairline on the left, instead of stacked run chips. A finished turn collapses them to one `.ui-pill` reading "Ran N steps · 41s".
 - **Status lives in two places only:** the sidebar's bot row (a dot plus `working 0:42` / `needs you`) and the chat header. The duplicate strip above the composer is removed.
-- **The composer's bottom bar** holds the target bot, the model, attach and mention. Stop replaces Send while a turn runs.
-- **The approval interrupt** sits in the transcript column, bordered in accent, with the keyboard hints `↵` / `esc`. It is not a modal.
-- **Empty team:** the mark and the wordmark "Musterd" at 56–96px, one headline, one line, one CTA group and one mono environment line. No cloud upsell and no companion phone.
+- **The composer is a tool bar, not a pill.** The field sits above a 36px bar, split by a hairline. The bar holds the target bot, the model, attach and mention, with hairline dividers. Send and Stop are 28px squares with a 4px radius. Icon buttons in the bar use a 4px radius, not a circle.
+- **The approval interrupt** sits in the transcript column with a 1px accent border on the page colour (no wash) and a mono `NEEDS YOU` tag. It has the keyboard hints `↵` / `esc` and is not a modal. The step that waits is marked `◆` in accent; the active step while streaming is `●` in ink.
+- **Empty team:** a block on the chat column's grid, left-aligned and placed at about 12vh. It is not centred. The mark is 40px and the wordmark 56px (44px on a phone), over a 1.5px ink rule. Below the rule is a 12-column grid: the headline, line and CTAs span 7 columns, and a mono ledger of this machine (engines, data, MCP, Kepler, edition) spans 4. No cloud upsell and no companion phone.
+- **The brand mark** is ink only. Mustard is not decoration.
 
 ## Motion (three, all existing tokens)
 
 1. `--animate-msg-in`: a new message or approval arriving.
-2. `--animate-caret`: the streaming caret, now in `--color-accent`.
+2. `--animate-caret`: the streaming caret, in `--color-ink`.
 3. `--animate-rise`: the empty-team hero, once.
 
 The working status dot does **not** pulse (`--animate-status-pulse` is not used on the desk). All three are disabled under `prefers-reduced-motion`.
