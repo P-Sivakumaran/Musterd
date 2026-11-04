@@ -1319,7 +1319,6 @@
   "settings.chatWidth.title": "チャットの幅",
   "settings.chatWidth.aria": "チャットの幅",
   "settings.font.title": "表示フォント",
-  "settings.font.subtitle": "このマシンでスキンのフォントを上書きします。Poppins がインストールされていれば使われます。",
   "settings.font.aria": "表示フォント",
   "settings.font.skin": "スキンの既定",
   "settings.font.system": "システム",

@@ -899,7 +899,6 @@
   "settings.chatWidth.title": "Sohbet genişliği",
   "settings.chatWidth.aria": "Sohbet genişliği",
   "settings.font.title": "Arayüz yazı tipi",
-  "settings.font.subtitle": "Bu makinede temanın yazı tipini geçersiz kılar. Yüklü olduğunda Poppins kullanılır.",
   "settings.font.aria": "Arayüz yazı tipi",
   "settings.font.skin": "Tema varsayılanı",
   "settings.font.system": "Sistem",

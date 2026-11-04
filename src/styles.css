@@ -2,6 +2,11 @@
 @import "@fontsource-variable/inter";
 @import "@fontsource-variable/geist";
 @import "@fontsource-variable/geist-mono";
+/* Musterd Basel (Midnight/Daylight): Open Foundry stack — Work Sans, Cooper Hewitt, Office Code Pro. */
+@import "@fontsource-variable/work-sans";
+@import "@fontsource/cooper-hewitt/600.css";
+@import "@fontsource/cooper-hewitt/700.css";
+@import "@typopro/web-office-code-pro/TypoPRO-OfficeCodePro.css";
 
 /* Phones and tablets have no hover, and Tailwind only applies `hover:` and
    `group-hover:` under `@media (hover: hover)`. A control revealed on hover
@@ -301,8 +306,12 @@
 
   --color-edge: #f5f5f50f;
 
-  --font-sans: "Geist Variable", -apple-system, BlinkMacSystemFont,
+  /* Open Foundry: Work Sans UI, Office Code Pro mono, Cooper Hewitt display. */
+  --font-sans: "Work Sans Variable", "Work Sans", -apple-system, BlinkMacSystemFont,
     "Segoe UI", system-ui, sans-serif;
+  --font-mono: "TypoPRO Office Code Pro", "Office Code Pro", "SF Mono", SFMono-Regular,
+    ui-monospace, Menlo, Consolas, monospace;
+  --font-display: "Cooper Hewitt", "Work Sans Variable", sans-serif;
   /* One radius scale, shared with Daylight. What takes which step: buttons
      and pills full; menu rows 6; fields 8; sidebar rows 10; menus 12;
      dialogs 14; a card inside a bubble 16; bubbles 18; the composer via
@@ -802,8 +811,12 @@
   --color-scrollbar: #c4c4c4;
   --color-maus-line: #5f5f5f;
 
-  --font-sans: "Geist Variable", -apple-system, BlinkMacSystemFont,
+  /* Open Foundry: same type stack as Midnight. */
+  --font-sans: "Work Sans Variable", "Work Sans", -apple-system, BlinkMacSystemFont,
     "Segoe UI", system-ui, sans-serif;
+  --font-mono: "TypoPRO Office Code Pro", "Office Code Pro", "SF Mono", SFMono-Regular,
+    ui-monospace, Menlo, Consolas, monospace;
+  --font-display: "Cooper Hewitt", "Work Sans Variable", sans-serif;
   --radius-xs: 2px;
   --radius-sm: 4px;
   --radius-md: 6px;
@@ -1218,6 +1231,14 @@ body,
 :root[data-font="inter"] {
   --font-sans: "Inter Variable", "Inter", -apple-system, BlinkMacSystemFont,
     "Segoe UI", Roboto, sans-serif;
+}
+:root[data-font="work-sans"] {
+  --font-sans: "Work Sans Variable", "Work Sans", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", system-ui, sans-serif;
+}
+:root[data-font="cooper-hewitt"] {
+  --font-sans: "Cooper Hewitt", "Work Sans Variable", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
 }
 :root[data-font="poppins"] {
   --font-sans: "Poppins", system-ui, -apple-system, BlinkMacSystemFont,

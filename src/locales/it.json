@@ -1292,7 +1292,6 @@
   "settings.chatWidth.title": "Larghezza della chat",
   "settings.chatWidth.aria": "Larghezza della chat",
   "settings.font.title": "Carattere dell'interfaccia",
-  "settings.font.subtitle": "Sostituisce il carattere del tema su questa macchina. Se Poppins è installato, si usa quello.",
   "settings.font.aria": "Carattere dell'interfaccia",
   "settings.font.skin": "Predefinito del tema",
   "settings.font.system": "Sistema",

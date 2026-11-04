@@ -899,7 +899,6 @@
   "settings.chatWidth.title": "Độ rộng khung chat",
   "settings.chatWidth.aria": "Độ rộng khung chat",
   "settings.font.title": "Phông chữ giao diện",
-  "settings.font.subtitle": "Ghi đè phông chữ của giao diện trên máy này. Poppins sẽ được dùng nếu đã được cài đặt.",
   "settings.font.aria": "Phông chữ giao diện",
   "settings.font.skin": "Mặc định của giao diện",
   "settings.font.system": "Hệ thống",

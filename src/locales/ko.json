@@ -1382,7 +1382,6 @@
   "settings.chatWidth.title": "채팅 너비",
   "settings.chatWidth.aria": "채팅 너비",
   "settings.font.title": "인터페이스 글꼴",
-  "settings.font.subtitle": "이 기기에서 스킨의 글꼴 대신 써요. Poppins는 설치되어 있을 때 쓰여요.",
   "settings.font.aria": "인터페이스 글꼴",
   "settings.font.skin": "스킨 기본값",
   "settings.font.system": "시스템",

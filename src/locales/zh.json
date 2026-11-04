@@ -1470,7 +1470,6 @@
   "settings.chatWidth.title": "聊天宽度",
   "settings.chatWidth.aria": "聊天宽度",
   "settings.font.title": "界面字体",
-  "settings.font.subtitle": "在这台设备上覆盖主题自带的字体。安装了 Poppins 时会使用 Poppins。",
   "settings.font.aria": "界面字体",
   "settings.font.skin": "主题默认",
   "settings.font.system": "系统字体",

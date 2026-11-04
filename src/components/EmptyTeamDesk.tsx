@@ -23,7 +23,12 @@ export function EmptyTeamDesk() {
           <MusterdMark size={phone ? 32 : 40} />
           <span
             className="font-semibold tracking-[-0.035em] text-ink"
-            style={{ fontSize: phone ? 44 : 56, lineHeight: 0.82, fontWeight: 640 }}
+            style={{
+              fontFamily: "var(--font-display, var(--font-sans))",
+              fontSize: phone ? 44 : 56,
+              lineHeight: 0.82,
+              fontWeight: 600,
+            }}
           >
             Musterd
           </span>

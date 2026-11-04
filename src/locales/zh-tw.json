@@ -821,7 +821,6 @@
   "settings.profile.learned.error": "無法更新「關於我」，請再試一次。",
   "settings.skin.title": "外觀主題",
   "settings.font.title": "介面字體",
-  "settings.font.subtitle": "在這台裝置上覆寫主題內建的字體。安裝了 Poppins 時會使用 Poppins。",
   "settings.font.aria": "介面字體",
   "settings.font.skin": "主題預設",
   "settings.font.system": "系統字體",

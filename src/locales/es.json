@@ -1173,7 +1173,6 @@
   "settings.chatWidth.title": "Ancho del chat",
   "settings.chatWidth.aria": "Ancho del chat",
   "settings.font.title": "Fuente de la interfaz",
-  "settings.font.subtitle": "Reemplaza la fuente del tema en este equipo. Se usa Poppins si está instalada.",
   "settings.font.aria": "Fuente de la interfaz",
   "settings.font.skin": "Predeterminada del tema",
   "settings.font.system": "Sistema",

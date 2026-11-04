@@ -1230,7 +1230,6 @@
   "settings.chatWidth.title": "Largura do chat",
   "settings.chatWidth.aria": "Largura do chat",
   "settings.font.title": "Fonte da interface",
-  "settings.font.subtitle": "Substitui a fonte do tema nesta máquina. A Poppins é usada quando está instalada.",
   "settings.font.aria": "Fonte da interface",
   "settings.font.skin": "Padrão do tema",
   "settings.font.system": "Sistema",

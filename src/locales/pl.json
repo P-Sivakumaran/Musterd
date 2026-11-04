@@ -1312,7 +1312,6 @@
   "settings.chatWidth.title": "Szerokość czatu",
   "settings.chatWidth.aria": "Szerokość czatu",
   "settings.font.title": "Czcionka interfejsu",
-  "settings.font.subtitle": "Zastępuje czcionkę motywu na tym komputerze. Poppins jest używana, gdy jest zainstalowana.",
   "settings.font.aria": "Czcionka interfejsu",
   "settings.font.skin": "Domyślna dla motywu",
   "settings.font.system": "Systemowa",

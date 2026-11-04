@@ -1318,7 +1318,6 @@
   "settings.chatWidth.title": "Ширина чата",
   "settings.chatWidth.aria": "Ширина чата",
   "settings.font.title": "Шрифт интерфейса",
-  "settings.font.subtitle": "Переопределяет шрифт оформления на этом компьютере. Если Poppins установлен, используется он.",
   "settings.font.aria": "Шрифт интерфейса",
   "settings.font.skin": "Как в оформлении",
   "settings.font.system": "Системный",

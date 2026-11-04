@@ -36,17 +36,21 @@ describe("fonts", () => {
     for (const id of blocks) expect(FONT_IDS).toContain(id as (typeof FONT_IDS)[number]);
   });
 
-  it("leads every skin with the bundled Geist face, except the paper skins and Pop", () => {
+  it("leads skins with Geist, except paper, Pop, and Basel Midnight/Daylight (Open Foundry)", () => {
     const skins = [...css.matchAll(/\[data-skin="([a-z-]+)"\]\s*\{[^}]*?--font-sans:\s*([^;]+);/g)];
     expect(skins.length).toBeGreaterThan(8);
     for (const [, skin, stack] of skins) {
       const first = stack.split(",")[0].trim();
       if (["atelier", "lagoon", "linen"].includes(skin)) expect(first, skin).toBe("system-ui");
       else if (skin === "pop") expect(first, skin).toBe('"Plus Jakarta Sans"');
+      else if (skin === "midnight" || skin === "daylight") expect(first, skin).toBe('"Work Sans Variable"');
       else expect(first, skin).toBe('"Geist Variable"');
     }
     expect(css).toMatch(/@import "@fontsource-variable\/geist";/);
+    expect(css).toMatch(/@import "@fontsource-variable\/work-sans";/);
     expect(css).toMatch(/--font-mono:\s*"Geist Mono Variable"/);
+    expect(css).toMatch(/\[data-skin="midnight"\][\s\S]*?--font-mono:\s*"TypoPRO Office Code Pro"/);
+    expect(css).toMatch(/\[data-skin="daylight"\][\s\S]*?--font-mono:\s*"TypoPRO Office Code Pro"/);
   });
 
   it("spells BlinkMacSystemFont exactly, since Chromium skips any other casing", () => {
