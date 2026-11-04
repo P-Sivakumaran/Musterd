@@ -81,3 +81,4 @@ Design these as one coherent product language. Prefer fewer, stronger screens ov
 - System pointers: [`system/README.md`](./system/README.md)
 - Paste-ready prompt: [`claude-design-prompt.md`](./claude-design-prompt.md)
 - MCP / Kepler peer: [`../mcp-server.md`](../mcp-server.md)
+- Desk prototype + token changes: [`handoff/README.md`](./handoff/README.md)
