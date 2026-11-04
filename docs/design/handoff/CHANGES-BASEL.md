@@ -15,3 +15,14 @@ Also changed:
 - **`--chat-column-max`:** the default is back to 60rem. 46rem becomes the Comfortable option.
 
 The token values themselves (mustard accent, warning, user bubble) are unchanged from the first handoff. See `TOKEN-CHANGES.md`.
+
+## Identity colours (final adjustment)
+
+In Midnight and Daylight only, the identity hues nearest mustard are cooled and desaturated, so a bot's avatar never competes with the signal colour:
+
+- **`--identity-orange`:** becomes clay, `#9a6a55` in Midnight and `#7d5847` in Daylight.
+- **`--identity-yellow`:** becomes olive, `#857f4a` in Midnight and `#6e6c45` in Daylight.
+
+The rest of the identity palette is kept, and other skins are untouched. Values and contrast are in `TOKEN-CHANGES.md`. Only `screens/*-approval.png` were re-shot.
+
+**Status:** this handoff is the visual truth for empty team, approval, Appearance and the composer. Design iteration is closed; implement against it in the React app.

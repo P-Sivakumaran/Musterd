@@ -45,7 +45,20 @@ Contrast is measured on the surface each token sits on. Re-run `pnpm check:contr
 | `--color-bubble-user` | `#1c1c1c` | `#ececec` | Drops the inverted black bubble. Mirrors Midnight's quiet tone |
 | `--color-bubble-user-ink` | `#fcfcfc` | `#1c1c1c` | 14.43:1 |
 
-Unchanged in both skins: every surface (`app`, `panel`, `raised`, `raised-hover`, `card`, `inset`, `control`, `menu*`, `frame`, `edge`, `hairline`), all three inks, `success`, `danger`, the identity colours and the fonts.
+Unchanged in both skins: every surface (`app`, `panel`, `raised`, `raised-hover`, `card`, `inset`, `control`, `menu*`, `frame`, `edge`, `hairline`), all three inks, `success`, `danger`, the fonts, and every identity colour except the two below.
+
+### Identity colours (Midnight and Daylight only)
+
+Bot avatars must never compete with the signal colour, so the two identity hues nearest mustard are cooled and desaturated. The rest of the identity palette is unchanged, and other skins keep their values.
+
+| Token | Skin | Today | Proposed | White monogram on it |
+| --- | --- | --- | --- | --- |
+| `--identity-orange` | Midnight | `#E78531` | `#9a6a55` (clay) | 2.69 → 4.6:1 |
+| `--identity-orange` | Daylight | `#b35e15` | `#7d5847` | 4.64 → 6.25:1 |
+| `--identity-yellow` | Midnight | `#D8A729` | `#857f4a` (olive) | 2.22 → 4.09:1 |
+| `--identity-yellow` | Daylight | `#91701b` | `#6e6c45` | 4.63 → 5.39:1 |
+
+Today yellow sits at hue 43° and orange at 28°, against mustard at 42°. The new values sit at about 19° and 55°, with saturation down from 70–80% to about 25–30%.
 
 **Skin overlap.** Foundry already uses a brass accent (`#d99a3e`). After this change, Foundry differs from Midnight through its warm neutrals and stays a distinct skin. No skin is orphaned, and `THEME_SKINS` stays `{ light: "daylight", dark: "midnight" }`.
 
