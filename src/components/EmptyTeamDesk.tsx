@@ -10,7 +10,7 @@ export function EmptyTeamDesk() {
   const { state, dispatch } = useStore();
   const phone = useMediaQuery(PHONE_LAYOUT);
   const engines = state.instances
-    .map((instance) => instance.name || instance.instanceId)
+    .map((instance) => instance.displayName || instance.instanceId)
     .filter(Boolean)
     .join(", ") || t("emptyTeam.ledger.none");
   const edition = state.config?.edition?.edition === "enterprise" ? "enterprise" : "local";
