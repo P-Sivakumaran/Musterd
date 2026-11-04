@@ -1,4 +1,4 @@
-import { Check, ChevronRight, Circle, X } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { api } from "@/state/api";
 import type { Message } from "@/state/store";
@@ -21,21 +21,29 @@ export function ToolActivity({ tool, place = null, live = false, source }: { too
   const advanced = useAdvancedMode();
   const label = advanced ? tool.label ?? tool.name : toolStepLabel(tool);
   const status = tool.ok === undefined ? (live ? t("toolDetail.running") : t("toolDetail.unverified")) : failed ? t("toolDetail.failed") : t("toolDetail.completed");
+  const mark = tool.ok === undefined
+    ? (live ? "●" : "○")
+    : failed ? "✕" : "✓";
   return (
-    <details onToggle={(event) => setExpanded(event.currentTarget.open)} className="group/tool w-fit max-w-full rounded-xl border border-hairline/40 bg-panel text-[13px] open:w-[min(38rem,100%)]" data-testid="tool-activity">
+    <details onToggle={(event) => setExpanded(event.currentTarget.open)} className="group/tool w-full max-w-full text-[12px] open:w-[min(38rem,100%)]" data-testid="tool-activity">
       <summary
         role="button"
         aria-expanded={expanded}
         aria-label={t("toolDetail.label", { name: label, status })}
-        className={cn("flex min-h-8 cursor-pointer list-none items-center gap-2 rounded-xl px-3 py-1.5 hover:bg-raised focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent [&::-webkit-details-marker]:hidden", failed ? "text-danger" : "text-ink-secondary")}
+        className={cn(
+          "flex min-h-0 cursor-pointer list-none items-center gap-2 py-0 font-mono leading-[1.75] hover:text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus [&::-webkit-details-marker]:hidden",
+          failed ? "text-danger" : live && tool.ok === undefined ? "text-ink" : "text-ink-secondary",
+        )}
       >
-        <span className="shrink-0" aria-hidden="true">{tool.ok === undefined ? (live ? <WorkingDots size={3.5} /> : <Circle size={13} />) : failed ? <X size={13} /> : <Check size={13} className="text-success" />}</span>
-        {place && <PlaceIcon place={place} size={13} className="shrink-0 opacity-70" role="img" aria-label={t(placeLabelKey(place))} data-testid="tool-place" />}
-        <span className={cn("min-w-0 max-w-[30rem] truncate leading-5", advanced ? "font-mono" : "font-medium")}>{label}</span>
-        {advanced && tool.summary && tool.summary !== tool.name && !nameIsCommand(tool.name) && <span className="min-w-0 flex-1 truncate font-mono" title={tool.summary}>{tool.summary}</span>}
-        <ChevronRight size={13} className="ml-auto shrink-0 group-open/tool:rotate-90" aria-hidden="true" />
+        <span className={cn("shrink-0 w-3 text-center", failed ? "text-danger" : tool.ok ? "text-success" : live ? "text-ink" : "text-ink-tertiary")} aria-hidden="true">
+          {live && tool.ok === undefined ? <WorkingDots size={3.5} /> : mark}
+        </span>
+        {place && <PlaceIcon place={place} size={12} className="shrink-0 opacity-70" role="img" aria-label={t(placeLabelKey(place))} data-testid="tool-place" />}
+        <span className="min-w-0 max-w-[30rem] truncate">{label}</span>
+        {advanced && tool.summary && tool.summary !== tool.name && !nameIsCommand(tool.name) && <span className="min-w-0 flex-1 truncate" title={tool.summary}>{tool.summary}</span>}
+        <ChevronRight size={12} className="ml-auto shrink-0 text-ink-tertiary group-open/tool:rotate-90" aria-hidden="true" />
       </summary>
-      <div className="space-y-3 border-t border-hairline/40 p-3 text-ink-secondary">
+      <div className="mt-1 space-y-3 border-l border-edge py-2 pl-3 text-ink-secondary">
         <div className={cn("text-[11px] font-medium", failed && "text-danger")}>{status}</div>
         {label !== tool.name && <div>
           <div className="mb-1 text-[11px] font-medium">{t("toolDetail.tool")}</div>

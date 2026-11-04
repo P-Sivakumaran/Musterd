@@ -24,6 +24,7 @@ import { SettingRow, SettingsDisclosureRow, SettingsGroup, SettingsRows } from "
 import { UsageSection } from "./UsageSection";
 import { PlanUsageSummary } from "./PlanUsage";
 import { SkinPicker } from "./SkinPicker";
+import { SignalColourSpecimen } from "./SignalColourSpecimen";
 import { PlaceLookRows } from "./PlaceLookCard";
 import { ChromeRailRow } from "./ChromeRailToggle";
 import { WindowFrameRow } from "./WindowFrameRow";
@@ -106,7 +107,14 @@ export function SimpleLooksPage({ onBack }: { onBack: () => void }) {
   return (
     <>
       <div><button type="button" className="ui-button" onClick={onBack}>{t("settings.simple.looks.back")}</button></div>
-      <div data-settings-block="looks"><SkinPicker /></div>
+      <div data-settings-block="looks" className="flex flex-col gap-6">
+        <SkinPicker />
+        <div>
+          <div className="text-[14px] font-medium text-ink">{t("settings.signal.title")}</div>
+          <div className="mt-0.5 text-[13px] text-ink-secondary">{t("settings.signal.subtitle")}</div>
+          <div className="mt-3"><SignalColourSpecimen /></div>
+        </div>
+      </div>
     </>
   );
 }

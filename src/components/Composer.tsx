@@ -784,7 +784,20 @@ export function Composer({
             data-composer-backdrop
             className={cn("pointer-events-none absolute -left-5 -right-5 bg-app", advanced ? "-bottom-3 top-1/2" : cn("top-0", simpleDock ? "-bottom-4" : "-bottom-3"))}
           />
-        <div ref={shellRef} data-tour="composer" data-multiline={multiline ? "" : undefined} className={cn("@container/composer relative z-[1]", singleRow ? "flex items-end gap-2" : simpleDock ? cn(SIMPLE_COMPOSER, "rounded-[var(--radius-composer)]") : cn("rounded-2xl px-2 py-1.5", ELEVATED_FLOAT))}>
+        <div
+          ref={shellRef}
+          data-tour="composer"
+          data-composer-toolbar={!singleRow && !simpleDock ? "" : undefined}
+          data-multiline={multiline ? "" : undefined}
+          className={cn(
+            "@container/composer relative z-[1]",
+            singleRow
+              ? "flex items-end gap-2"
+              : simpleDock
+                ? cn(SIMPLE_COMPOSER, "rounded-[var(--radius-composer)]")
+                : cn("overflow-hidden rounded-[var(--radius-composer)]", ELEVATED_FLOAT),
+          )}
+        >
         {singleRow && !locked && (
           <div className="flex shrink-0 items-center">
             <PhonePlus
@@ -804,7 +817,11 @@ export function Composer({
         )}
         <div className={singleRow ? cn("min-w-0 flex-1 rounded-[26px] px-3 py-1.5", ELEVATED_FLOAT) : "contents"}>
         {replyTo && <ComposerReplyStrip message={replyTo} fallbackName={bot?.name} onClear={onClearReply} />}
-        <div data-composer-row className={cn("flex items-end", simpleDock ? "gap-1.5" : "gap-1", !singleRow && !simpleDock && "@max-[30rem]/composer:flex-wrap", stacked && "flex-wrap")}>
+        <div data-composer-row className={cn(
+          "flex",
+          simpleDock ? "items-end gap-1.5" : singleRow ? "items-end gap-1" : "flex-col items-stretch gap-0",
+          stacked && simpleDock && "flex-wrap",
+        )}>
           <input
             ref={fileInput}
             type="file"
@@ -817,14 +834,23 @@ export function Composer({
             }}
           />
           {!locked && !singleRow && (
-            <div className={cn("flex items-center gap-1", simpleDock ? "shrink-0" : "flex-wrap")}>
+            <div
+              data-composer-tools
+              className={cn(
+                "flex items-center gap-1",
+                simpleDock
+                  ? "shrink-0"
+                  : "order-2 h-9 gap-0.5 border-t border-edge px-1.5",
+              )}
+              style={simpleDock ? undefined : { background: "color-mix(in srgb, var(--color-ink) 2.5%, transparent)" }}
+            >
               {simpleDock && <ComposerPlusMenu onAttach={() => fileInput.current?.click()} goal={goal} teach={canLearn ? teachTask : undefined} />}
               {advanced && <button
                 type="button"
                 onClick={() => fileInput.current?.click()}
                 aria-label={t("composer.attach")}
                 title={t("composer.attach")}
-                className="flex size-8 shrink-0 items-center justify-center rounded-full text-ink-secondary hover:bg-control hover:text-ink"
+                className="flex size-7 shrink-0 items-center justify-center rounded-[4px] text-ink-secondary hover:bg-control hover:text-ink"
               >
                 <Paperclip size={16} strokeWidth={1.75} absoluteStrokeWidth />
               </button>}
@@ -841,10 +867,11 @@ export function Composer({
                   onPin={(surface) => dispatch({ type: "updateTask", botId: modeBot.id, threadId: modeBot.threadId, patch: { surface } })}
                 />
               )}
+              {!simpleDock && <span className="ml-auto" aria-hidden="true" />}
             </div>
           )}
           <MentionTextarea
-          wrapperClassName={singleRow || simpleDock ? undefined : cn("@max-[30rem]/composer:order-first @max-[30rem]/composer:basis-full", stacked && "order-first basis-full")}
+          wrapperClassName={singleRow || simpleDock ? undefined : "order-1 w-full px-3.5 pt-3 pb-2.5"}
           inputRef={inputRef}
           peers={[...(group ? members ?? [] : state.bots.filter((member) => member.id !== bot?.id)), ...teammates.peers]}
           everyone={Boolean(group && !group.dm)}
@@ -943,22 +970,30 @@ export function Composer({
               simpleDock ? "min-h-7 px-0.5 py-1 text-[14px] leading-5" : "min-h-6 py-1 leading-6",
             )}
           />
-          <div data-composer-actions className={cn("flex items-center", simpleDock ? "gap-2" : "gap-1", !singleRow && !simpleDock && "@max-[30rem]/composer:ml-auto", stacked && "ml-auto")}>
+          <div
+            data-composer-actions
+            className={cn(
+              "flex items-center",
+              simpleDock ? "gap-2" : singleRow ? "gap-1" : "order-2 -mt-9 ml-auto h-9 items-center gap-0.5 pr-1.5",
+              stacked && simpleDock && "ml-auto",
+            )}
+          >
           {(simpleDock ? stoppable : busy) && !locked && (
           <button
             onClick={interruptTurn}
             aria-label={t("chat.stopTurn")}
             data-composer-stop={simpleDock ? (stopInSlot ? "slot" : "beside") : undefined}
             className={cn(
-              "flex shrink-0 items-center justify-center rounded-full",
-              !simpleDock ? "size-8 text-ink-secondary hover:bg-raised hover:text-ink"
-                : stopInSlot ? cn("size-7", slot.button.className)
+              "flex shrink-0 items-center justify-center",
+              !simpleDock
+                ? "size-7 rounded-[4px] bg-ink/[0.12] text-ink hover:bg-ink/[0.18]"
+                : stopInSlot ? cn("size-7 rounded-full", slot.button.className)
                 : SIMPLE_CONTROL,
             )}
             style={stopInSlot ? slot.button.style : undefined}
             title={t("chat.stop")}
           >
-            <Square size={simpleDock ? 10 : 14} className="fill-current" />
+            <Square size={simpleDock ? 10 : 12} className="fill-current" />
           </button>
         )}
         {!locked && !busy && capabilities.dictation.available && (
@@ -966,8 +1001,8 @@ export function Composer({
             onClick={toggleMic}
             aria-label={recording ? t("composer.dictation.stop") : t("composer.dictation.start")}
             className={cn(
-              "flex shrink-0 items-center justify-center rounded-full",
-              simpleDock ? "size-7" : "size-8",
+              "flex shrink-0 items-center justify-center",
+              simpleDock ? "size-7 rounded-full" : singleRow ? "size-8 rounded-full" : "size-7 rounded-[4px]",
               recording
                 ? "animate-pulse bg-danger/20 text-danger"
                 : advanced || singleRow ? "text-ink-secondary hover:bg-raised hover:text-ink" : SIMPLE_CONTROL,
