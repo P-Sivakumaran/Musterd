@@ -612,7 +612,6 @@
   "settings.profile.subtitle": "Показується в бічній панелі. Зберігається на ходу.",
   "settings.profile.name": "Ваше ім'я",
   "settings.skin.title": "Тема",
-  "settings.skin.subtitle": "Застосовується миттєво і запам'ятовується на цій машині.",
   "settings.threadDisplay.title": "Гілки",
   "settings.threadDisplay.subtitle": "Показувати списки гілок і керування лише на цьому пристрої. Приховування зберігає всю історію розмов і поточну роботу; групи не змінюються. Увімкніть знову, щоб повернути доступ до гілок.",
   "settings.threadDisplay.show": "Показувати гілки",

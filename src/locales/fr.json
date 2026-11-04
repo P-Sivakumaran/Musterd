@@ -519,7 +519,6 @@
   "settings.profile.subtitle": "Affiché dans la barre latérale. Enregistré au fil de la saisie.",
   "settings.profile.name": "Votre nom",
   "settings.skin.title": "Thème",
-  "settings.skin.subtitle": "S'applique aussitôt et reste mémorisé sur cet ordinateur.",
   "settings.roomTurns.title": "Tours en groupe",
   "settings.roomTurns.label": "Arrêter sans progression après",
   "settings.roomTurns.minutes": "minutes",
