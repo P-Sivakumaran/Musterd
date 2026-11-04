@@ -1557,6 +1557,7 @@
   "settings.chatWidth.subtitle": "How wide message bubbles can grow on this machine. Wide and Full width use more of a large window.",
   "settings.chatWidth.aria": "Chat width",
   "settings.chatWidth.standard": "Standard",
+  "settings.chatWidth.comfortable": "Comfortable",
   "settings.chatWidth.wide": "Wide",
   "settings.chatWidth.full": "Full width",
   "settings.font.title": "Interface font",

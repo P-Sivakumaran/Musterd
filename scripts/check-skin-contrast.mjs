@@ -245,10 +245,10 @@ for (const [id, tokens] of skins) {
   if (skinFailed) failed = true;
 }
 
-// The inverted bubbles (Daylight's ink-black, Pop's ink) have
-// their own inherited context: the editor, labels, quotes and file chips
-// explicitly use these tokens, not parent color.
-for (const skinId of ["daylight", "pop"]) {
+// Inverted bubbles (Pop's ink-on-cream) have their own inherited context:
+// the editor, labels, quotes and file chips use these tokens, not parent color.
+// Daylight's user bubble is quiet light grey (Basel) and uses skin tokens directly.
+for (const skinId of ["pop"]) {
   const scope = css.match(new RegExp(`@scope \\(\\[data-skin="${skinId}"\\]\\) to \\(\\[data-skin\\]\\)\\s*\\{\\s*\\.bg-bubble-user\\s*\\{([^}]*)\\}`))?.[1];
   if (!scope) {
     failed = true;

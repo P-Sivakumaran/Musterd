@@ -55,7 +55,7 @@ Bot avatars must never compete with the signal colour, so the two identity hues 
 | --- | --- | --- | --- | --- |
 | `--identity-orange` | Midnight | `#E78531` | `#9a6a55` (clay) | 2.69 → 4.6:1 |
 | `--identity-orange` | Daylight | `#b35e15` | `#7d5847` | 4.64 → 6.25:1 |
-| `--identity-yellow` | Midnight | `#D8A729` | `#857f4a` (olive) | 2.22 → 4.09:1 |
+| `--identity-yellow` | Midnight | `#D8A729` | `#7a7545` (olive; darkened past 4.5:1) | 2.22 → ~4.5+:1 |
 | `--identity-yellow` | Daylight | `#91701b` | `#6e6c45` | 4.63 → 5.39:1 |
 
 Today yellow sits at hue 43° and orange at 28°, against mustard at 42°. The new values sit at about 19° and 55°, with saturation down from 70–80% to about 25–30%.

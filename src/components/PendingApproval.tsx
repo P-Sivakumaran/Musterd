@@ -6,7 +6,7 @@ import { t, tFromServer } from "@/lib/i18n";
 import type { LocaleKey } from "@/locales";
 import { SkillRequestPreview } from "@/components/SkillRequestPreview";
 import { titledCard, toolLabel } from "./ApprovalCard";
-import { ASK_QUIET_ANSWER, ASK_QUIET_BUTTON, ASK_SECONDARY_BUTTON, AskDetail, AskHeader, askPrimary, type Asker } from "./AskCard";
+import { ASK_BUTTON_SHAPE, ASK_QUIET_ANSWER, ASK_QUIET_BUTTON, ASK_SECONDARY_BUTTON, AskDetail, AskHeader, askPrimary, type Asker } from "./AskCard";
 import { outboundSummary } from "@/lib/approval-summary";
 import { reviewedSkillSha256 } from "../../shared/skill-request";
 import { useOwnerOrAdmin } from "@/lib/use-owner-or-admin";
@@ -281,6 +281,10 @@ export function PendingApprovalActions({
     });
 
   const allow = askPrimary(bot?.color);
+  /* Basel: "Allow once" is the one accent-filled control; other confirms keep the bot colour. */
+  const allowOnce = !titled && !isSkillRequest && !isRoutineRequest && !isProfileRequest;
+  const allowClass = allowOnce ? `${ASK_BUTTON_SHAPE} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus disabled:opacity-40 ui-button-accent` : allow.className;
+  const allowStyle = allowOnce ? undefined : allow.style;
   const marked = (action: string) => (tag ? { [`data-${tag}-action`]: action } : {});
   const showPrimary = part !== "more";
   const showMore = part !== "primary";
@@ -343,8 +347,8 @@ export function PendingApprovalActions({
       type="button"
       onClick={() => decide("allow")}
       disabled={isSkillRequest && !reviewedSha256}
-      className={allow.className}
-      style={allow.style}
+      className={allowClass}
+      style={allowStyle}
     >
       {titled ? pending.message.card?.options[0] : isSkillRequest
         ? pending.message.card?.skillRequest?.action === "update"

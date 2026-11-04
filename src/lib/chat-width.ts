@@ -1,4 +1,4 @@
-export const CHAT_WIDTH_IDS = ["standard", "wide", "full"] as const;
+export const CHAT_WIDTH_IDS = ["standard", "comfortable", "wide", "full"] as const;
 export type ChatWidthId = (typeof CHAT_WIDTH_IDS)[number];
 
 export const DEFAULT_CHAT_WIDTH: ChatWidthId = "standard";
