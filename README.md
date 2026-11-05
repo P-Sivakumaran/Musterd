@@ -17,7 +17,7 @@ Talk to them like contacts. Watch them work. Approve what matters.
 
 <br>
 
-<sub>No packaged releases yet — build from source (see Dev setup below). The upstream project this forked from has its own releases at <a href="https://github.com/milind-soni/OpenMausBot/releases">github.com/milind-soni/OpenMausBot</a>.</sub>
+<sub>Musterd releases: <a href="https://github.com/P-Sivakumaran/Musterd/releases">github.com/P-Sivakumaran/Musterd/releases</a>. Soft-fork sync from upstream OpenMausBot is documented in <a href="docs/ops/upstream-sync.md">docs/ops/upstream-sync.md</a>.</sub>
 
 <br>
 <br>
@@ -301,23 +301,12 @@ See [Run OpenMausBot from scripts and CI](docs/headless-cli.md).
 
 ## Quick start
 
-**Released builds ([latest release](https://github.com/milind-soni/OpenMausBot/releases/latest)):** the harness server is embedded, so no separate server setup is required.
-
-| | Download | Install |
-|---|---|---|
-| **macOS** (Apple silicon) | [OpenMausBot.dmg](https://github.com/milind-soni/OpenMausBot/releases/latest/download/OpenMausBot.dmg) | Drag it to Applications, open it. Signed & notarized. |
-| **macOS** (Intel) | [OpenMausBot-intel.dmg](https://github.com/milind-soni/OpenMausBot/releases/latest/download/OpenMausBot-intel.dmg) | Same app, built for Intel Macs. Signed & notarized. |
-| **Windows** (x64) | [OpenMausBot-setup.exe](https://github.com/milind-soni/OpenMausBot/releases/latest/download/OpenMausBot-setup.exe) | Run it — one-click, per-user, no admin rights. The installer isn't code-signed yet, so SmartScreen shows "unknown publisher": **More info → Run anyway**. |
-| **Ubuntu 24.04** (x64) | [OpenMausBot-amd64.deb](https://github.com/milind-soni/OpenMausBot/releases/latest/download/OpenMausBot-amd64.deb) · [OpenMausBot.AppImage](https://github.com/milind-soni/OpenMausBot/releases/latest/download/OpenMausBot.AppImage) | Install the `.deb` with APT (recommended), or make the AppImage executable and run it. Beta; GNOME is the supported desktop. |
-
-See the [Ubuntu Desktop guide](docs/linux-desktop.md) for installation, capabilities, and troubleshooting.
-Any desktop build can also pair as a client to another Windows, macOS, or Ubuntu host over Tailscale; see [desktop-to-desktop companion mode](docs/desktop-companion.md).
-
+**Releases:** source tags and notes ship on [P-Sivakumaran/Musterd/releases](https://github.com/P-Sivakumaran/Musterd/releases). Packaged desktop installers are not cut for Musterd yet — run from source (below). Soft-fork sync from upstream OpenMausBot: [docs/ops/upstream-sync.md](docs/ops/upstream-sync.md).
 
 **From source:**
 
 ```sh
-git clone https://github.com/milind-soni/OpenMausBot && cd OpenMausBot
+git clone https://github.com/P-Sivakumaran/Musterd && cd Musterd
 pnpm install
 
 pnpm dev:server    # harness server → 127.0.0.1:8799

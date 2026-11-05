@@ -2,18 +2,19 @@
 import { existsSync } from "node:fs";
 import { join, sep } from "node:path";
 
-export const LATEST_RELEASE_URL = "https://api.github.com/repos/milind-soni/OpenMausBot/releases/latest";
+/** Musterd soft-fork releases — never milind-soni/OpenMausBot. */
+export const LATEST_RELEASE_URL = "https://api.github.com/repos/P-Sivakumaran/Musterd/releases/latest";
 const CACHE_MS = 60 * 60_000;
 
 /** "managed" is a hosted or Cloud server that is updated for its owner. */
 export type InstallKind = "desktop" | "managed" | "docker" | "podman" | "npm" | "git" | "unknown";
 
-/** As docs/self-hosting.md and deploy/podman/README.md give them. */
+/** As docs/self-hosting.md and deploy/podman/README.md give them (Musterd checkout). */
 export const UPDATE_COMMANDS: Partial<Record<InstallKind, { command: string; restart: boolean }>> = {
   docker: { command: "docker compose pull omb && docker compose up -d", restart: false },
   podman: { command: "git pull && cd deploy/podman && PODMAN_COMPOSE_PROVIDER=podman-compose podman compose --env-file .env -f compose.yaml up -d --build", restart: false },
-  npm: { command: "npm install -g openmausbot@latest", restart: true },
-  git: { command: "git pull && pnpm install", restart: true },
+  npm: { command: "git pull origin main && pnpm install", restart: true },
+  git: { command: "git pull origin main && pnpm install", restart: true },
 };
 
 export function installKind(input: {
@@ -93,7 +94,7 @@ export function createUpdateChecker(options: {
     inflight ??= (async () => {
       try {
         const response = await fetchRelease(LATEST_RELEASE_URL, {
-          headers: { accept: "application/vnd.github+json", "user-agent": "openmausbot-update-check" },
+          headers: { accept: "application/vnd.github+json", "user-agent": "musterd-update-check" },
           signal: AbortSignal.timeout(8_000),
         });
         if (!response.ok) throw new Error(`GitHub answered ${response.status}`);

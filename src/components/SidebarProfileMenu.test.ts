@@ -112,7 +112,7 @@ describe("updatePhase", () => {
 describe("updateLabel", () => {
   it("names the version it is ready to install", () => {
     expect(updateLabel("downloaded", state({ status: "downloaded", version: "0.2.0" }))).toBe(
-      "Restart to update to MausBot 0.2.0",
+      "Restart to update to Musterd 0.2.0",
     );
   });
 
@@ -126,7 +126,7 @@ describe("updateLabel", () => {
     expect(updateLabel("installing", state({ status: "installing", message: "Restart is taking longer than expected." })))
       .toBe("Restart is taking longer than expected.");
     expect(updateLabel("downloaded", state({ status: "downloaded", version: "0.2.0", installMode: "handoff" })))
-      .toBe("Install MausBot 0.2.0");
+      .toBe("Install Musterd 0.2.0");
     expect(updateLabel("installing", state({ status: "installing", installMode: "handoff" })))
       .toBe("Opening a terminal…");
   });
@@ -200,11 +200,11 @@ describe("updateNoteworthy", () => {
 describe("outward links", () => {
   it("sends Help Center to the docs the website also links to", () => {
     expect(HELP_CENTER_URL).toBe(DOCS_URL);
-    expect(DOCS_URL).toBe("https://github.com/milind-soni/OpenMausBot/tree/main/docs");
+    expect(DOCS_URL).toBe("https://github.com/P-Sivakumaran/Musterd/tree/main/docs");
   });
 
   it("sends Send Feedback to the Discord community", () => {
-    expect(FEEDBACK_URL).toBe("https://discord.gg/9Wb8MEpXRs");
+    expect(FEEDBACK_URL).toBe("https://github.com/P-Sivakumaran/Musterd/issues");
   });
 });
 
@@ -330,8 +330,10 @@ describe("choosing where the phone connects", () => {
 describe("Get the phone app", () => {
   it("offers iPhone and Android with the links the website and Cloud page use", () => {
     expect(PHONE_APPS.map((app) => [app.id, app.url])).toEqual([["ios", IOS_APP_STORE_URL], ["android", ANDROID_APK_URL]]);
-    expect(IOS_APP_STORE_URL).toBe("https://apps.apple.com/in/app/mausbot/id6803387923");
-    expect(ANDROID_APK_URL).toBe("https://github.com/milind-soni/OpenMausBot/releases/download/android-v1.5.0/OpenMausBot.apk");
+    expect(IOS_APP_STORE_URL).toContain("P-Sivakumaran/Musterd");
+    expect(ANDROID_APK_URL).toContain("P-Sivakumaran/Musterd");
+    expect(IOS_APP_STORE_URL).not.toContain("milind-soni/OpenMausBot");
+    expect(ANDROID_APK_URL).not.toContain("OpenMausBot.apk");
   });
 
   const render = (connect?: PhoneAppConnect[]) => {

@@ -1,5 +1,7 @@
 # Musterd design system — pointers for Claude Design
 
+Brand kit (mark, type, signal colour, voice): [`musterd-brand.md`](musterd-brand.md) · mark SVG: [`musterd-mark.svg`](musterd-mark.svg).
+
 This is not a second component library. The live system is CSS tokens + a few shared classes + React screens. Point GitHub Import / “Add a design system” at these paths.
 
 ## Tokens & skins
