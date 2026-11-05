@@ -1,0 +1,228 @@
+# Soft-fork Path A: build the Windows NSIS installer on a real Windows runner,
+# verify the electron-updater feed, and draft/publish a GitHub Release on
+# P-Sivakumaran/Musterd. See docs/ops/desktop-updates.md.
+#
+# Tags are clean vX.Y.Z matching package.json (no -musterd suffix) so
+# electron-updater and the in-app update-check banner agree.
+name: Release Windows
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Commit/tag/branch to release (defaults to the branch this runs from)"
+        required: false
+        type: string
+      publish:
+        description: "Publish immediately after assembly (otherwise leave a draft for review)"
+        required: false
+        type: boolean
+        default: false
+  push:
+    branches:
+      - main
+    paths:
+      - package.json
+
+permissions:
+  contents: read
+
+jobs:
+  prepare:
+    name: Pin the release commit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      sha: ${{ steps.pin.outputs.sha }}
+      version: ${{ steps.pin.outputs.version }}
+      should_release: ${{ steps.pin.outputs.should_release }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ inputs.ref || github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+      - id: pin
+        env:
+          BEFORE: ${{ github.event.before }}
+        run: |
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+          current=$(node -p "require('./package.json').version")
+          echo "version=$current" >> "$GITHUB_OUTPUT"
+          should_release=true
+          if [ "$GITHUB_EVENT_NAME" = push ]; then
+            git cat-file -e "$BEFORE:package.json" 2>/dev/null || {
+              echo "::error::cannot verify the version before this push; refusing to start a release"
+              exit 1
+            }
+            previous=$(git show "$BEFORE:package.json" | node -e 'let s=""; process.stdin.on("data", d => s += d).on("end", () => console.log(JSON.parse(s).version))')
+            if [ "$previous" = "$current" ]; then
+              echo "package.json changed without a version bump; skipping the release"
+              should_release=false
+            fi
+          fi
+          echo "should_release=$should_release" >> "$GITHUB_OUTPUT"
+      - name: Refuse to overwrite a published release
+        if: steps.pin.outputs.should_release == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          v="v$(node -p "require('./package.json').version")"
+          if gh release view "$v" --repo "$GITHUB_REPOSITORY" --json isDraft --jq .isDraft 2>/dev/null | grep -q false; then
+            echo "::error::$v is already published on $GITHUB_REPOSITORY — bump the version first"
+            exit 1
+          fi
+
+  windows:
+    name: Windows x64
+    needs: prepare
+    if: needs.prepare.outputs.should_release == 'true'
+    runs-on: windows-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ needs.prepare.outputs.sha }}
+          persist-credentials: false
+      - uses: pnpm/action-setup@ff378ebe6b225b0680b81c1ad4498ae0d1d3a5e3 # v6.0.10
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Clean generated output
+        shell: bash
+        run: rm -rf dist dist-server release
+      - run: pnpm package:win
+      - name: Verify the bundled browser with an empty home
+        run: node scripts/smoke-browser-bundle.mjs --resources "${{ github.workspace }}/release/win-unpacked/resources"
+      - name: Verify the packaged server discovers its browser
+        env:
+          OMB_SMOKE_DIST: ${{ github.workspace }}/release/win-unpacked/resources/server
+        run: node scripts/smoke-packaged-server.mjs --browser-bundle "${{ github.workspace }}/release/win-unpacked/resources/browser-engine"
+      - name: Verify the packaged tree and start the packaged server
+        shell: bash
+        run: |
+          res=release/win-unpacked/resources
+          [ -f "$res/server/index.js" ] || { echo "::error::missing server/index.js"; exit 1; }
+          [ -f "$res/server/desktop-entry.mjs" ] || { echo "::error::missing server/desktop-entry.mjs"; exit 1; }
+          node scripts/check-module-scopes.mjs "$res"
+          [ -f "$res/ui/index.html" ] || { echo "::error::missing ui/index.html"; exit 1; }
+          [ -f "$res/cloudflared/cloudflared.exe" ] || { echo "::error::missing cloudflared.exe"; exit 1; }
+          [ -f "$res/licenses/cloudflared-LICENSE.txt" ] || { echo "::error::missing cloudflared license"; exit 1; }
+          [ -f "$res/licenses/cloudflared-README.md" ] || { echo "::error::missing cloudflared provenance"; exit 1; }
+          expected=$(node --input-type=module -e "import { CLOUDFLARED_ASSETS } from './scripts/prepare-cloudflared.mjs'; console.log(Object.values(CLOUDFLARED_ASSETS).find((asset) => asset.name === 'cloudflared-windows-amd64.exe').binarySha256)")
+          actual=$(sha256sum "$res/cloudflared/cloudflared.exe" | cut -d' ' -f1)
+          [ "$actual" = "$expected" ] || { echo "::error::cloudflared hash is $actual"; exit 1; }
+          "$res/cloudflared/cloudflared.exe" version | grep -Fq "cloudflared version 2026.10.3 " || {
+            echo "::error::cloudflared has the wrong version"; exit 1; }
+          [ -f "$res/app-update.yml" ] || { echo "::error::missing app-update.yml"; exit 1; }
+          grep -Eq '^owner: P-Sivakumaran$' "$res/app-update.yml" || { echo "::error::wrong update owner"; exit 1; }
+          grep -Eq '^repo: Musterd$' "$res/app-update.yml" || { echo "::error::wrong update repo"; exit 1; }
+          if grep -q "publisherName" "$res/app-update.yml"; then
+            echo "::error::publisherName on an unsigned build breaks every update"; exit 1
+          fi
+          echo "--- app-update.yml ---"; cat "$res/app-update.yml"
+          HOME="$RUNNER_TEMP/smoke" USERPROFILE="$RUNNER_TEMP/smoke" OMB_PORT=21987 \
+            node "$res/server/index.js" > "$RUNNER_TEMP/server.log" 2>&1 &
+          pid=$!
+          for _ in $(seq 1 90); do
+            curl -fsS --max-time 2 http://127.0.0.1:21987/api/health >/dev/null 2>&1 && { kill $pid; exit 0; }
+            kill -0 $pid 2>/dev/null || break
+            sleep 1
+          done
+          echo "::error::the packaged server never served /api/health"
+          cat "$RUNNER_TEMP/server.log" || true
+          exit 1
+      - name: Stable-named setup copy
+        shell: bash
+        run: |
+          v=$(node -p "require('./package.json').version")
+          cp "release/Musterd-$v-setup.exe" release/Musterd-setup.exe
+      - name: Verify latest.yml against the setup bytes
+        shell: bash
+        env:
+          VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          required=(
+            "release/Musterd-$VERSION-setup.exe"
+            "release/Musterd-$VERSION-setup.exe.blockmap"
+            release/Musterd-setup.exe
+            release/latest.yml
+          )
+          for file in "${required[@]}"; do
+            test -s "$file" || { echo "::error::missing or empty: $file"; exit 1; }
+          done
+          node --input-type=module - <<'EOF'
+          import { createHash } from "node:crypto";
+          import { readFileSync, statSync } from "node:fs";
+          const version = process.env.VERSION;
+          const setup = `Musterd-${version}-setup.exe`;
+          const text = readFileSync("release/latest.yml", "utf8");
+          const entries = [...text.matchAll(/url:\s+(\S+)[\s\S]*?sha512:\s+(\S+)\n\s+size:\s+(\d+)/g)];
+          if (entries.length !== 1 || entries[0][1] !== setup) {
+            console.error("WRONG PATHS in latest.yml:", entries.map((e) => e[1]).join(", ") || "none");
+            process.exit(1);
+          }
+          const [, url, hash, size] = entries[0];
+          const bytes = readFileSync(`release/${url}`);
+          const okHash = createHash("sha512").update(bytes).digest("base64") === hash;
+          const okSize = statSync(`release/${url}`).size === Number(size);
+          if (!okHash || !okSize) {
+            console.error(`MISMATCH ${url} in latest.yml`);
+            process.exit(1);
+          }
+          console.log(`ok ${url}`);
+          EOF
+      - name: Create or update the release draft and upload assets
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.prepare.outputs.version }}
+          SHA: ${{ needs.prepare.outputs.sha }}
+          PUBLISH: ${{ inputs.publish || false }}
+        run: |
+          tag="v$VERSION"
+          ensure_draft() {
+            local attempt delay
+            for attempt in 1 2 3 4 5; do
+              gh release view "$tag" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1 && return 0
+              if gh release create "$tag" --repo "$GITHUB_REPOSITORY" \
+                --target "$SHA" --draft --title "Musterd $VERSION" --generate-notes; then
+                return 0
+              fi
+              gh release view "$tag" --repo "$GITHUB_REPOSITORY" > /dev/null 2>&1 && return 0
+              test "$attempt" -lt 5 || {
+                echo "::error::could not create $tag after $attempt attempts"
+                return 1
+              }
+              delay=$((5 << (attempt - 1)))
+              echo "::warning::release creation failed; retrying in ${delay}s ($attempt/5)"
+              sleep "$delay"
+            done
+          }
+          ensure_draft
+          target=$(gh release view "$tag" --repo "$GITHUB_REPOSITORY" --json targetCommitish --jq .targetCommitish)
+          target_sha=$(gh api "repos/$GITHUB_REPOSITORY/commits/$target" --jq .sha)
+          test "$target_sha" = "$SHA" || {
+            echo "::error::$tag draft targets $target_sha, not pinned release commit $SHA"
+            exit 1
+          }
+          for file in \
+            "release/Musterd-$VERSION-setup.exe" \
+            "release/Musterd-$VERSION-setup.exe.blockmap" \
+            release/Musterd-setup.exe \
+            release/latest.yml
+          do
+            gh release upload "$tag" "$file" --repo "$GITHUB_REPOSITORY" --clobber
+          done
+          if [ "$PUBLISH" = "true" ]; then
+            gh release edit "$tag" --repo "$GITHUB_REPOSITORY" --draft=false --latest
+            echo "published $tag"
+          else
+            echo "left $tag as a draft — publish from the GitHub UI or re-run with publish=true"
+          fi
+          gh release view "$tag" --repo "$GITHUB_REPOSITORY" \
+            --json isDraft,isLatest,assets --jq '{draft:.isDraft,latest:.isLatest,assets:[.assets[].name]}'

@@ -71,7 +71,13 @@ jobs:
           current=$(node -p "require('./package.json').version")
           echo "version=$current" >> "$GITHUB_OUTPUT"
           should_release=true
-          if [ "$GITHUB_EVENT_NAME" = push ]; then
+          # Soft-fork: this workflow is still upstream-shaped (OpenMausBot
+          # artifact names, Apple signing, legacy mirror). Musterd ships
+          # Windows via release-windows.yml — see docs/ops/desktop-updates.md.
+          if [ "$GITHUB_REPOSITORY" = "P-Sivakumaran/Musterd" ]; then
+            echo "soft-fork: skipping full Release on $GITHUB_REPOSITORY; use release-windows.yml"
+            should_release=false
+          elif [ "$GITHUB_EVENT_NAME" = push ]; then
             git cat-file -e "$BEFORE:package.json" 2>/dev/null || {
               echo "::error::cannot verify the version before this push; refusing to start a release"
               exit 1

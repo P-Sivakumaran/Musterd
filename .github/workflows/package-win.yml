@@ -1,15 +1,9 @@
 # Windows installer, built on a real Windows runner and published as a
 # workflow artifact.
 #
-# Why this exists: releases are cut by hand from a Mac, which cannot build
-# an NSIS installer (electron-builder needs wine, and a cross-built exe
-# that never ran on Windows is exactly the artifact that looks fine and
-# breaks in the field). So every release so far shipped Windows behind the
-# mac build — different trees under one version number. Run this from the
-# same commit as the mac build and attach the artifact to the release.
-#
-# Deliberately artifact-only: the full release workflow is the one place
-# allowed to create a GitHub release.
+# Soft-fork product releases that create/publish a GitHub Release use
+# release-windows.yml. This workflow stays artifact-only for ad-hoc builds
+# and for attaching Windows bits without cutting a release.
 name: Package Windows
 
 on:
@@ -87,8 +81,10 @@ jobs:
           fi
           [ -f "$res/app-update.yml" ] || { echo "::error::missing $res/app-update.yml"; fail=1; }
           if [ -f "$res/app-update.yml" ]; then
-            grep -Eq '^repo: OpenMausBot$' "$res/app-update.yml" || {
-              echo "::error::app-update.yml does not point at milind-soni/OpenMausBot"; fail=1; }
+            grep -Eq '^owner: P-Sivakumaran$' "$res/app-update.yml" || {
+              echo "::error::app-update.yml owner is not P-Sivakumaran"; fail=1; }
+            grep -Eq '^repo: Musterd$' "$res/app-update.yml" || {
+              echo "::error::app-update.yml does not point at P-Sivakumaran/Musterd"; fail=1; }
             # while the build is unsigned, a publisherName makes
             # electron-updater reject every update as untrusted
             if grep -q "publisherName" "$res/app-update.yml"; then
@@ -123,6 +119,12 @@ jobs:
           cat "$RUNNER_TEMP/server.log" || true
           kill $pid 2>/dev/null || true
           exit 1
+
+      - name: Stable-named setup copy
+        shell: bash
+        run: |
+          v=$(node -p "require('./package.json').version")
+          cp "release/Musterd-$v-setup.exe" release/Musterd-setup.exe
 
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

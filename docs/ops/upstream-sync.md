@@ -25,8 +25,9 @@ Product releases and the in-app update banner come **only** from `origin` (`P-Si
 
 ## After a Musterd release
 
-- Tag `vX.Y.Z` on `main` and publish a GitHub Release so `update-check` sees a real `latest`.
+- Ship Windows via **Release Windows** (see [`desktop-updates.md`](desktop-updates.md)): bump `package.json`, draft/publish `vX.Y.Z` with `latest.yml` + setup exe so both the sidebar banner and electron-updater work.
 - Confirm the sidebar update banner links to `https://github.com/P-Sivakumaran/Musterd/releases`.
+- Do not rely on the full multi-platform `release.yml` on this fork — it is a no-op here.
 
 ## Do not
 
