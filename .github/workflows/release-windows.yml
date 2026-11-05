@@ -225,4 +225,5 @@ jobs:
             echo "left $tag as a draft — publish from the GitHub UI or re-run with publish=true"
           fi
           gh release view "$tag" --repo "$GITHUB_REPOSITORY" \
-            --json isDraft,isLatest,assets --jq '{draft:.isDraft,latest:.isLatest,assets:[.assets[].name]}'
+            --json isDraft,isPrerelease,publishedAt,assets \
+            --jq '{draft:.isDraft,prerelease:.isPrerelease,publishedAt:.publishedAt,assets:[.assets[].name]}'
