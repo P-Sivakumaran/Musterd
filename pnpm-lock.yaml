@@ -39,6 +39,12 @@ importers:
       '@fontsource-variable/inter':
         specifier: ^5.3.0
         version: 5.3.0
+      '@fontsource-variable/work-sans':
+        specifier: ^5.3.0
+        version: 5.3.0
+      '@fontsource/cooper-hewitt':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@hpke/core':
         specifier: 1.9.0
         version: 1.9.0
@@ -60,6 +66,9 @@ importers:
       '@trycua/cua-driver':
         specifier: 0.28.2
         version: 0.28.2
+      '@typopro/web-office-code-pro':
+        specifier: ^3.7.5
+        version: 3.7.5
       ag-grid-community:
         specifier: 36.2.0
         version: 36.2.0
@@ -1108,6 +1117,12 @@ packages:
 
   '@fontsource-variable/inter@5.3.0':
     resolution: {integrity: sha512-OupL48va4JNofb97w6NYeF9S7W/kHNKM0Er8Dem5nqi4jeOLrVJDoE8tZEpnMJmtkvNbB1EIPPwHcdkF6b1oUA==}
+
+  '@fontsource-variable/work-sans@5.3.0':
+    resolution: {integrity: sha512-le8h/OIIuhm5Z7TdvuMw0yKg2gaCZUiMec8zaumsVVjzeJRBPEF0bQI/MkaZDHCVzZDvZoP/O2LiGOSfDLSbaw==}
+
+  '@fontsource/cooper-hewitt@5.3.0':
+    resolution: {integrity: sha512-09NffsCEdn54gJlshUniPO9EKvQ4zBcldLtpQaZlPNu/8OFIbkbWrgoEEc6K4pBz5K5GlI+BKboxLVqojUp5Pg==}
 
   '@fuma-translate/react@1.0.2':
     resolution: {integrity: sha512-uOiOtBx3nRXR8Nu1GzBf1tApgF1FErDBTHxRIAQeyQdyOoZbrNRN6H4kDCWObY4qyGeGbHydG0DHzgeUgFDMIw==}
@@ -2414,6 +2429,9 @@ packages:
 
   '@types/ws@8.18.2':
     resolution: {integrity: sha512-67MQl+fpWKVTT1NYdnmo3U4sc/xPo/zQBncVnI74qmQa0z/b+1g6iYqNmGCPbxO+zz2aklb08a0oHfegiVd0/w==}
+
+  '@typopro/web-office-code-pro@3.7.5':
+    resolution: {integrity: sha512-q3D5m92u/w470YyBW35J9vCXlCUfTJwGuKUUvNl5sAwFTlzFa10TfKQX82ao2paLg6FZ047oDgX6DPd4yTnBbg==}
 
   '@ubjs/core@0.31.0-3':
     resolution: {integrity: sha512-39XrJgUZ2VVb561sSnkXPhczNoeBsNiSRArecsV0JE7CJq69ajFkcn9/tBAUS2NpgHkLIDU+z6Ks2+1wXnboxg==}
@@ -6134,6 +6152,10 @@ snapshots:
 
   '@fontsource-variable/inter@5.3.0': {}
 
+  '@fontsource-variable/work-sans@5.3.0': {}
+
+  '@fontsource/cooper-hewitt@5.3.0': {}
+
   '@fuma-translate/react@1.0.2(@types/react@19.2.18)(react-dom@19.2.8(react@19.2.8))(react@19.2.8)':
     dependencies:
       react: 19.2.8
@@ -7188,6 +7210,8 @@ snapshots:
   '@types/ws@8.18.2':
     dependencies:
       '@types/node': 26.2.0
+
+  '@typopro/web-office-code-pro@3.7.5': {}
 
   '@ubjs/core@0.31.0-3': {}
 

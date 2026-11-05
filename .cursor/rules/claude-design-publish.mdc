@@ -1,0 +1,16 @@
+---
+description: Auto-commit and push Musterd design docs so Claude Design GitHub Import can read them
+alwaysApply: true
+---
+
+# Claude Design publish
+
+When you create or update files under `docs/design/` (briefs, system pointers, handoff, research, UX evals, prompts) that Claude Design should be able to read:
+
+1. Commit them on the active design branch (prefer `docs/ui-overhaul-claude-design` or the branch already used for Design Import — do not invent a new branch unless needed).
+2. Push to **`origin`** (`P-Sivakumaran/Musterd`) only — never open PRs against OpenMausBot/`upstream` by accident; use `gh pr create --repo P-Sivakumaran/Musterd`.
+3. Do this without waiting to be asked. Treat “Claude Design can see it” as part of finishing the write.
+4. Still skip committing secrets, `.env`, credentials, or unrelated code changes in the same commit.
+5. Prefer docs-only commits with a clear `docs(design):` message.
+
+If push hooks are still running, finish the push before telling the user the files are Import-visible.

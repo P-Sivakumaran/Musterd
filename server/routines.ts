@@ -276,7 +276,7 @@ export interface RoutineManagerOptions {
 const CATCH_UP_MS = 12 * 60 * 60_000;
 const WAKE_HORIZON_MS = 60 * 60_000;
 
-export const ROUTINE_RESTARTED = "OpenMausBot restarted while this routine was running";
+export const ROUTINE_RESTARTED = "Musterd restarted while this routine was running";
 const MAX_RUNS = 2_000;
 /** A run in one of these statuses may still change (its output, its status, its wait); every other status is
  * terminal, so once reached the run never changes again and belongs in the append-only log, not this file. */

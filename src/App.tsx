@@ -50,6 +50,7 @@ import { CloudSetup } from "@/components/CloudSetup";
 import { CloudWelcome } from "@/components/cloud-welcome/CloudWelcome";
 import { WelcomeKeeper } from "@/components/cloud-welcome/WelcomeKeeper";
 import { EmptyChatShell } from "@/components/onboarding/EmptyChatShell";
+import { EmptyTeamDesk } from "@/components/EmptyTeamDesk";
 import { cloudFirstRun, cloudWelcomeVisible, useCloudWelcome } from "@/lib/cloud-welcome";
 import { engineReady } from "@/components/EngineLibrary";
 import { CommandPalette } from "@/components/CommandPalette";
@@ -377,6 +378,8 @@ function Shell({ viewer }: { viewer: WelcomeViewer | null }) {
         <GroupView key={group.id} group={group} />
       ) : bot ? (
         <ChatView bot={bot} />
+      ) : !loading.busy && state.connected && state.hydrated ? (
+        <EmptyTeamDesk />
       ) : (
         <main data-app-loading={loading.text} className="relative flex h-full min-w-0 flex-1 flex-col items-center justify-center gap-3 bg-app text-ink-secondary">
           <WindowDragStrip />

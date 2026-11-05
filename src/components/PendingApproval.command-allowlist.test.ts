@@ -152,7 +152,7 @@ describe("remembering exact command approvals", () => {
     expect(always).not.toMatch(/(^|\s)bg-/);
     expect(deny).toContain("bg-ink/[0.07]");
     expect(deny).not.toContain("danger");
-    expect(allow).toContain("ui-button-primary");
+    expect(allow).toContain("ui-button-accent");
   });
 
   it("shows the command whole, in a quiet mono block above the answers", () => {

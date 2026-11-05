@@ -39,6 +39,11 @@ describe("chat width", () => {
     for (const id of CHAT_WIDTH_IDS.filter((w) => w !== DEFAULT_CHAT_WIDTH)) {
       expect(blocks).toContain(id);
       const body = css.match(new RegExp(`:root\\[data-chat-width="${id}"\\]\\s*\\{([^}]*)\\}`))?.[1] ?? "";
+      if (id === "comfortable") {
+        // Narrows the column only; bubble caps stay on the :root defaults.
+        expect(body).toMatch(/--chat-column-max:\s*46rem/);
+        continue;
+      }
       expect(body).toMatch(/--chat-bubble-max\s*:/);
       expect(body).toMatch(/--chat-bubble-pct\s*:/);
       expect(body).toMatch(/--chat-card-pct\s*:/);
@@ -46,6 +51,12 @@ describe("chat width", () => {
   });
 
   it.each(CHAT_WIDTH_IDS)("sizes the %s column so its bubbles still reach their cap", (id) => {
+    if (id === "comfortable") {
+      const body = css.match(/:root\[data-chat-width="comfortable"\]\s*\{([^}]*)\}/)?.[1] ?? "";
+      expect(body).toMatch(/--chat-column-max:\s*46rem/);
+      // Standard bubble cap is 35rem; 46rem × 80% = 36.8rem ≥ 35rem.
+      return;
+    }
     const selector = id === DEFAULT_CHAT_WIDTH ? ":root" : `:root\\[data-chat-width="${id}"\\]`;
     const body = css.match(new RegExp(`${selector}\\s*\\{\\s*(--chat-bubble-max[^}]*)\\}`))?.[1] ?? "";
     const token = (name: string) => body.match(new RegExp(`--${name}:\\s*([\\d.]+)(rem|%)?`))?.slice(1) ?? [];

@@ -39,8 +39,9 @@ export function ComposerSendButton({ compact, waits, label, title, look, disable
       title={menu && alternate ? t("composer.followUp.buttonTitle", { title, key: menu.alternateKey, alternate: t(`composer.followUp.${alternate}`) }) : title}
       style={waits ? undefined : look.style}
       className={cn(
-        "flex shrink-0 items-center justify-center rounded-full disabled:cursor-default",
-        compact ? "size-7 animate-[slot-fade-in_120ms_ease-out]" : "size-8",
+        "composer-send flex shrink-0 items-center justify-center disabled:cursor-default",
+        // Basel desk: 28px square with 4px radius; phone/simple keep the round control.
+        compact ? "size-7 rounded-full animate-[slot-fade-in_120ms_ease-out]" : "size-7 rounded-[4px]",
         waits ? "bg-raised text-ink-secondary hover:bg-raised-hover" : look.className,
       )}
     >
@@ -68,8 +69,8 @@ export function ComposerSendButton({ compact, waits, label, title, look, disable
         ariaLabel={t("composer.followUp.menu")}
         triggerTitle={t("composer.followUp.menu")}
         triggerClassName={cn(
-          "flex shrink-0 items-center justify-center rounded-full text-ink-secondary hover:bg-raised hover:text-ink",
-          compact ? "h-7 w-5" : "h-8 w-6",
+          "flex shrink-0 items-center justify-center text-ink-secondary hover:bg-raised hover:text-ink",
+          compact ? "h-7 w-5 rounded-full" : "h-7 w-5 rounded-[4px]",
         )}
         renderTrigger={() => <ChevronUp size={14} aria-hidden="true" />}
       />

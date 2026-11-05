@@ -44,6 +44,7 @@ import { SkillsSection } from "./SkillsSection";
 import { LicenseExpiryBanner } from "./LicenseExpiryBanner";
 import { WorkspacesSection, workspacesAvailable } from "./WorkspacesSection";
 import { SkinPicker } from "./SkinPicker";
+import { SignalColourSpecimen } from "./SignalColourSpecimen";
 import { ThemeRow } from "./ThemeRow";
 import { ChatWidthRow, FontRow, SidebarToolsLayoutRow } from "./AppearanceSelectRows";
 import { RoomTurnTimeoutSettings } from "./RoomTurnTimeoutSettings";
@@ -377,6 +378,9 @@ export function SettingsModal() {
             <ThemeRow />
             <Card title={t("settings.skin.title")} subtitle={t("settings.skin.subtitle")}>
               <SkinPicker />
+            </Card>
+            <Card title={t("settings.signal.title")} subtitle={t("settings.signal.subtitle")}>
+              <SignalColourSpecimen />
             </Card>
             <PlaceLookCard />
             {remoteActive && <AdvancedModeRow />}
