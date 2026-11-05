@@ -437,12 +437,14 @@ if (browserBundle && (browserReport?.error || browserReport?.browserEngine?.kind
   process.exit(1);
 }
 
+const mcpServerName = mcpReport?.responses?.find((response) => response.id === 1)?.result?.serverInfo?.name;
 if (
   !mcpReport ||
   mcpReport.error ||
   mcpReport.exit?.timeout ||
   mcpReport.exit?.code !== 0 ||
-  mcpReport.responses?.find((response) => response.id === 1)?.result?.serverInfo?.name !== "openmausbot-mcp" ||
+  // Soft-fork ships musterd-mcp; keep openmausbot-mcp for upstream sync trees.
+  (mcpServerName !== "musterd-mcp" && mcpServerName !== "openmausbot-mcp") ||
   mcpReport.responses?.find((response) => response.id === 2)?.result?.structuredContent?.status !== "connected" ||
   JSON.stringify(mcpReport.responses?.find((response) => response.id === 3)?.result) !== "{}"
 ) {
